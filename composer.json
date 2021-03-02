@@ -1,0 +1,49 @@
+{
+    "name": "mreko/mrz",
+    "type": "library",
+    "description": "Machine Readable Zone generator",
+    "keywords": [
+        "mreko",
+        "mrz"
+    ],
+    "homepage": "https://github.com/mreko/mrz",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Evandro Kondrat",
+            "email": "evandrok@gmail.com",
+            "homepage": "https://github.com/mreko",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "~7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : ">=8.0",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "mreko\\mrz\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "mreko\\mrz\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit tests",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
