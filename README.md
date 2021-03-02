@@ -16,10 +16,6 @@ Machine Readable Zone generator, inspired by: https://github.com/Arg0s1080/mrz
 If any of the following are applicable to your project, then the directory structure should follow industry best practices by being named the following.
 
 ```
-bin/        
-build/
-docs/
-config/
 src/
 tests/
 vendor/
@@ -37,8 +33,8 @@ $ composer require mreko/mrz
 ## Usage
 
 ``` php
-$skeleton = new mreko\mrz();
-echo $skeleton->echoPhrase('Hello, League!');
+$mrz = new Mrz("id", "BRA", "9234", "870322", "M", "130724", "BRA", "Kondrat", "Evandro");
+echo $mrz->TD1CodeGenerator();
 ```
 
 ## Testing
@@ -46,10 +42,6 @@ echo $skeleton->echoPhrase('Hello, League!');
 ``` bash
 $ composer test
 ```
-
-## Security
-
-If you discover any security related issues, please email evandrok@gmail.com instead of using the issue tracker.
 
 ## Credits
 
