@@ -7,6 +7,10 @@ class Mrz
     use HashGenerator, StringChecks;
 
     /**
+     * @var bool
+     */
+    private $gen_hash_doc = true;
+    /**
      * @var string
      */
     private $document_type;
@@ -78,7 +82,7 @@ class Mrz
                                 string $given_names,
                                 string $optional_data1 = "",
                                 string $optional_data2 = "",
-                                bool $force = False)
+                                bool   $force = False)
     {
         $this->document_type = $document_type;
         $this->country_code = $country_code;
@@ -91,6 +95,8 @@ class Mrz
         $this->given_names = $given_names;
         $this->optional_data1 = $optional_data1;
         $this->optional_data2 = $optional_data2;
+
+        $this->handleBiggerDocumentNumbers();
     }
 
     public function TD1CodeGenerator(): string
@@ -125,5 +131,29 @@ class Mrz
             $this->expiry_date_hash() .
             $this->optional_data2()
         );
+    }
+
+    /**
+     * From ICAO Doc:
+     * if the document number has more than 9
+     * characters, the 9 principal characters shall be shown in the MRZ in character positions 6 to 14. They shall be
+     * followed by a filler character instead of a check digit to indicate a truncated number. The remaining characters
+     * of the document number shall be shown at the beginning of the field reserved for optional data elements
+     * (character positions 16 to 30 of the upper machine readable line) followed by a check digit and a filler character.
+     * @return void
+     */
+    private function handleBiggerDocumentNumbers()
+    {
+        if (strlen($this->document_number) > 9) {
+
+            $doc = $this->document_number;
+            $this->gen_hash_doc = false;
+
+            $first_part = substr($doc, 0, 9);
+            $second_part = substr($doc, 9, strlen($doc) - 9);
+
+            $this->document_number = $first_part;
+            $this->optional_data1 = $second_part . Helper::hash_string($first_part . "<" . $second_part);
+        }
     }
 }

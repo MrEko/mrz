@@ -43,4 +43,64 @@ final class MrzTest extends TestCase
             $mrz->TD1CodeGenerator()
         );
     }
+
+    public function testTd1Case04(): void
+    {
+        $mrz = new Mrz("ID",              # Document type
+            "Belgium",         # Country
+            "000590448301",       # Document number
+            "850101",          # Birth date
+            "F",               # Genre
+            "170203",          # Expiry date
+            "Belgium",         # Nationality
+            "Le Meunier",      # Surname
+            "Jennifer Anne",   # Given name(s)
+            "",                # Optional data 1: This field is null. I still have to think what to do with it
+            "85010100200");    # Optional data 2
+
+        $this->assertEquals(
+            "IDBEL000590448<3016<<<<<<<<<<<" . PHP_EOL . "8501019F1702035BEL850101002007" . PHP_EOL . "LE<MEUNIER<<JENNIFER<ANNE<<<<<",
+            $mrz->TD1CodeGenerator()
+        );
+    }
+
+    public function testTd1Case5(): void
+    {
+        $mrz = new Mrz("ID",              # Document type
+            "Belgium",         # Country
+            "000610035701",       # Document number
+            "000201",          # Birth date
+            "F",               # Genre
+            "091019",          # Expiry date
+            "Belgium",         # Nationality
+            "Maes",            # Surname
+            "Sophie Ann G",    # Given name(s)
+            "blahblah",                # Optional data 1. Canceled
+            "00020100200");    # Optional data 2
+
+        $this->assertEquals(
+            "IDBEL000610035<7017<<<<<<<<<<<" . PHP_EOL . "0002015F0910190BEL000201002003" . PHP_EOL . "MAES<<SOPHIE<ANN<G<<<<<<<<<<<<",
+            $mrz->TD1CodeGenerator()
+        );
+    }
+
+    public function testTd1Case6(): void
+    {
+        $mrz = new Mrz("ID",              # Document type
+            "BEL",             # Country
+            "B100326500",        # Document number
+            "821020",          # Birth date
+            "F",               # Genre
+            "060131",          # Expiry date
+            "New Zealand",     # Nationality
+            "Flores",          # Surname
+            "Gema Caroline J", # Given name(s)
+            "",              # Optional data 1. CANCELLED
+            "82102008472");    # Optional data 2
+
+        $this->assertEquals(
+            "IDBELB10032650<08<<<<<<<<<<<<<" . PHP_EOL . "8210209F0601315NZL821020084722" . PHP_EOL . "FLORES<<GEMA<CAROLINE<J<<<<<<<",
+            $mrz->TD1CodeGenerator()
+        );
+    }
 }

@@ -386,13 +386,13 @@ class Helper
         ];
 
 
-        $ucfirst = mb_strtoupper(mb_substr($string, 0, 1)) . mb_strtolower(mb_substr($string, 1));
+        $ucContry = ucwords(mb_strtolower($string));
         if (in_array(mb_strtoupper($string), $countries)) {
             return str_pad(mb_strtoupper($string), 3, '<', STR_PAD_RIGHT);
-        } elseif (array_key_exists($ucfirst, $countries)) {
-            return str_pad($countries[$ucfirst], 3, '<', STR_PAD_RIGHT);
+        } elseif (array_key_exists($ucContry, $countries)) {
+            return str_pad($countries[$ucContry], 3, '<', STR_PAD_RIGHT);
         } else {
-            throw new \Exception("Country Error:" . $string);
+            throw new \Exception("Country Error:" . $ucContry);
         }
     }
 }
