@@ -103,4 +103,44 @@ final class MrzTest extends TestCase
             $mrz->TD1CodeGenerator()
         );
     }
+
+    public function testTd1Case7(): void
+    {
+        $mrz = new Mrz("ID",              # Document type
+            "BEL",             # Country
+            "B100326500",        # Document number
+            "821020",          # Birth date
+            "F",               # Genre
+            "060131",          # Expiry date
+            "New Zealand",     # Nationality
+            "Flores",          # Surname
+            "Gema Caroline J", # Given name(s)
+            "",              # Optional data 1. CANCELLED
+            "82102008472");    # Optional data 2
+
+        $this->assertEquals(
+            "IDBELB10032650<08<<<<<<<<<<<<<" . PHP_EOL . "8210209F0601315NZL821020084722" . PHP_EOL . "FLORES<<GEMA<CAROLINE<J<<<<<<<",
+            $mrz->TD1CodeGenerator()
+        );
+    }
+
+    public function testTd1Case8(): void
+    {
+        $mrz = new Mrz("ID",              # Document type
+            "BEL",             # Country
+            "B100326500",        # Document number
+            "821020",          # Birth date
+            "F",               # Genre
+            "060131",          # Expiry date
+            "New Zealand",     # Nationality
+            "SANTOS MOURA CABRAL",          # Surname
+            "ANA LUIZA", # Given name(s)
+            "",              # Optional data 1. CANCELLED
+            "82102008472");    # Optional data 2
+
+        $this->assertEquals(
+            "IDBELB10032650<08<<<<<<<<<<<<<" . PHP_EOL . "8210209F0601315NZL821020084722" . PHP_EOL . "SANTOS<MOURA<CABRAL<<ANA<LUIZA",
+            $mrz->TD1CodeGenerator()
+        );
+    }
 }

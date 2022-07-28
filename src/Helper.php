@@ -395,4 +395,61 @@ class Helper
             throw new \Exception("Country Error:" . $ucContry);
         }
     }
+
+    static function str_contains($haystack, $needle)
+    {
+        return $needle !== '' && mb_strpos($haystack, $needle) !== false;
+    }
+
+    static function break_full_name(string $fullName, string $filiation1 = "", string $filiation2 = ""): array
+    {
+        $fullNameArr = explode(' ', $fullName);
+        $sizeArr = sizeof($fullNameArr);
+
+        // remove first name
+        $filiationLastNames1 = strstr($filiation1, " ");
+        $filiationLastNames2 = strstr($filiation2, " ");
+        if ($sizeArr == 2) {
+            return [$fullNameArr[0], $fullNameArr[1]];
+        } else if ($sizeArr > 2) {
+            $given_names = $fullNameArr[0];
+            $surnameFixed = $fullNameArr[$sizeArr - 1];
+
+            $remainingArr = array_values(array_diff($fullNameArr, [$given_names]));
+            $remainingArr = array_values(array_diff($remainingArr, [$surnameFixed]));
+
+            $shorten = false;
+            $addToSurname = false;
+            $surnameTemp = "";
+            while (sizeof($remainingArr) != 0) {
+                $remainingSize = 28 - strlen($given_names) - strlen($surnameTemp . $surnameFixed);
+                $tempStr = implode(" ", $remainingArr);
+
+                if (strlen($tempStr) > $remainingSize) {
+                    $shorten = true;
+                }
+
+                $chunk = $remainingArr[0];
+                $remainingArr = array_values(array_diff($remainingArr, [$chunk]));
+
+                if ($shorten) {
+                    $chunkHandle = $chunk[0];
+                } else {
+                    $chunkHandle = $chunk;
+                }
+
+                if ($addToSurname || self::str_contains($filiationLastNames1, $chunk) || self::str_contains($filiationLastNames2, $chunk)) {
+                    // once added to the surname, everything else will be
+                    $addToSurname = true;
+                    $surnameTemp .= $chunkHandle . " ";
+                } else {
+                    $given_names .= " " . $chunkHandle;
+                }
+            }
+
+            return [$given_names, $surnameTemp . $surnameFixed];
+        } else {
+            return [$fullName, ""];
+        }
+    }
 }
