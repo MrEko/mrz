@@ -148,5 +148,10 @@ final class HelperTest extends TestCase
             ['ANA LUIZA', 'SANTOS MOURA CABRAL'],
             Helper::break_full_name('ANA LUIZA SANTOS MOURA CABRAL', 'XX DOS SANTOS', 'XX DOS SANTOS')
         );
+
+        $this->assertEquals(
+            ['ANNA L', 'I MURTA'],
+            Helper::break_full_name('ANNA LYDIA ISKOROSTENSKI MURTA', 'XX TATIANA VIEIRA ISKOROSTENSKI MURTA', 'XX AUGUSTO MURTA')
+        );
     }
 }

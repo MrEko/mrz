@@ -425,7 +425,7 @@ class Helper
                 $remainingSize = 28 - strlen($given_names) - strlen($surnameTemp . $surnameFixed);
                 $tempStr = implode(" ", $remainingArr);
 
-                if (strlen($tempStr) > $remainingSize) {
+                if (strlen($tempStr) >= $remainingSize) {
                     $shorten = true;
                 }
 
